@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rumah Tryout - CBT Online</title>
+    <style>
+      :root {
+        --primary-green: #1b8241;
+        --light-green: #eaf5ed;
+        --accent-green: #239b56;
+        --warning-orange: #f39c12;
+        --danger-red: #e74c3c;
+        --info-blue: #3498db;
+        --status-gray: #95a5a6;
+        --gray-bg: #f8f9fa;
+        --border-color: #dcdcdc;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--gray-bg);
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+
+      .brand-header {
+        text-align: center;
+        padding: 20px 0 10px 0;
+        background: white;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .trophy-icon {
+        font-size: 45px;
+        margin-bottom: 5px;
+      }
+
+      .brand-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--primary-green);
+        margin: 0;
+      }
+
+      .card-box {
+        background: white;
+        max-width: 450px;
+        margin: 30px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--border-color);
+      }
+
+      .container-dash,
+      .container-exam {
+        display: none;
+        max-width: 1100px;
+        margin: 20px auto;
+        padding: 0 15px;
+      }
+
+      .active-view {
+        display: block;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+
+      .btn-secondary {
+        background-color: white;
+        color: var(--primary-green);
+        border: 1px solid var(--primary-green);
+        margin-top: 10px;
+      }
+
+      .btn-danger {
+        background-color: var(--danger-red);
+        width: auto;
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .navbar-peserta {
+        background: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 30px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 25px;
+        border-radius: 8px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .nav-links button {
+        background: none;
+        color: #555;
+        width: auto;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .nav-links button.active-nav,
+      .nav-links button:hover {
+        background: var(--light-green);
+        color: var(--primary-green);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active-tab {
+        display: block;
+      }
+
+      .grid-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .card-item {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        margin-bottom: 15px;
+      }
+
+      .exam-layout {
+        display: flex;
+        gap: 20px;
+      }
+
+      .question-main {
+        flex: 3;
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+      }
+
+      .exam-sidebar {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      video#webcam-small {
+        width: 100%;
+        height: 90px;
+        background: #000;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+
+      .number-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .btn-num {
+        padding: 8px 0;
+        background: #f1f1f1;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+        font-size: 13px;
+        width: 100%;
+      }
+
+      .btn-num.active {
+        border-color: var(--primary-green);
+        background: white;
+        color: var(--primary-green);
+      }
+      .btn-num.answered {
+        background: var(--accent-green);
+        color: white;
+        border-color: var(--accent-green);
+      }
+      .btn-num.doubt {
+        background: var(--warning-orange);
+        color: white;
+        border-color: var(--warning-orange);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid var(--border-color);
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      th {
+        background-color: var(--light-green);
+        color: var(--primary-green);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand-header">
+      <div class="trophy-icon">🏆</div>
+      <h1 class="brand-title">Rumah Tryout</h1>
+    </div>
+
+    <!-- 1. HALAMAN LOGIN -->
+    <div id="view-auth" class="card-box active-view">
+      <h3
+        style="text-align: center; margin-top: 0; color: var(--primary-green)"
+      >
+        Selamat Datang di Rumah Tryout
+      </h3>
+      <p
+        style="
+          text-align: center;
+          font-size: 13px;
+          color: #666;
+          margin-bottom: 20px;
+        "
+      >
+        Silakan login untuk melanjutkan
+      </p>
+
+      <div id="form-login-box">
+        <div class="form-group">
+          <label>NISN / Username</label>
+          <input
+            type="text"
+            id="login-user"
+            placeholder="Masukkan NISN atau username"
+          />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input
+            type="password"
+            id="login-pass"
+            placeholder="Masukkan password"
+          />
+        </div>
+        <button onclick="prosesLogin()">Login</button>
+        <button class="btn-secondary" onclick="toggleAuth('register')">
+          Buat Akun
+        </button>
+      </div>
+
+      <div id="form-reg-box" style="display: none">
+        <div class="form-group">
+          <label>Nama Lengkap</label
+          ><input type="text" id="reg-nama" placeholder="Nama siswa" />
+        </div>
+        <div class="form-group">
+          <label>Asal Sekolah</label
+          ><input type="text" id="reg-sekolah" placeholder="Nama sekolah" />
+        </div>
+        <div class="form-group">
+          <label>Kelas</label
+          ><input type="text" id="reg-kelas" placeholder="Kelas" />
+        </div>
+        <div class="form-group">
+          <label>NISN / Username</label
+          ><input type="text" id="reg-user" placeholder="NISN" />
+        </div>
+        <div class="form-group">
+          <label>Password</label
+          ><input type="password" id="reg-pass" placeholder="Password" />
+        </div>
+        <button onclick="prosesRegister()">Daftar Sekarang</button>
+        <button class="btn-secondary" onclick="toggleAuth('login')">
+          Kembali ke Login
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. DASHBOARD PESERTA -->
+    <div id="view-dashboard-peserta" class="container-dash">
+      <div class="navbar-peserta">
+        <div
+          style="font-weight: bold; color: var(--primary-green)"
+          id="peserta-welcome-text"
+        >
+          Halo, Peserta
+        </div>
+        <div class="nav-links">
+          <button
+            class="active-nav"
+            onclick="switchPesertaTab('beranda', this)"
+          >
+            Beranda
+          </button>
+          <button onclick="switchPesertaTab('kartu', this)">
+            Kartu Peserta
+          </button>
+          <button onclick="switchPesertaTab('hasil', this)">Hasil CBT</button>
+          <button onclick="switchPesertaTab('upload', this)">
+            Upload Esai
+          </button>
+        </div>
+        <button
+          style="
+            width: auto;
+            background: var(--danger-red);
+            padding: 6px 12px;
+            font-size: 13px;
+          "
+          onclick="logout()"
+        >
+          Keluar
+        </button>
+      </div>
+
+      <div id="peserta-tab-beranda" class="tab-panel active-tab">
+        <div
+          class="card-item"
+          style="
+            background: #eef9f2;
+            border-color: var(--accent-green);
+            margin-bottom: 25px;
+          "
+        >
+          <h4 style="margin-top: 0; color: var(--primary-green)">
+            Informasi & Pengumuman
+          </h4>
+          <div id="peserta-list-informasi">
+            <p style="font-size: 13px; color: #555">
+              Belum ada informasi terbaru dari admin.
+            </p>
+          </div>
+        </div>
+
+        <h3>Jadwal Ujian Aktif</h3>
+        <div class="grid-cards" id="list-jadwal-peserta">
+          <p>Belum ada jadwal ujian aktif dari admin.</p>
+        </div>
+      </div>
+
+      <div id="peserta-tab-kartu" class="tab-panel">
+        <h3>Kartu Peserta Ujian</h3>
+        <div class="card-item" id="info-kartu-peserta">
+          <p>
+            Belum ada file kartu peserta PDF yang diunggah oleh admin untuk akun
+            ini.
+          </p>
+        </div>
+      </div>
+
+      <div id="peserta-tab-hasil" class="tab-panel">
+        <div class="card-box" style="margin: 0 auto; text-align: center">
+          <div class="trophy-icon">🏆</div>
+          <h3 style="color: var(--primary-green); margin-bottom: 5px">
+            Pengumuman Hasil CBT
+          </h3>
+          <p style="font-size: 13px; color: #666; margin-bottom: 20px">
+            Rumah Tryout
+          </p>
+          <div class="form-group">
+            <select id="select-hasil-bab">
+              <option value="">Pilih Bab / Mapel</option>
+            </select>
+          </div>
+          <button onclick="tampilkanHasilCBT()">Lihat Hasil CBT</button>
+        </div>
+        <div id="hasil-cbt-detail-box" style="margin-top: 20px"></div>
+      </div>
+
+      <div id="peserta-tab-upload" class="tab-panel">
+        <h3>Upload Jawaban Esai</h3>
+        <div class="card-box" style="margin: 0; max-width: 100%">
+          <div class="form-group">
+            <label>Pilih Mata Pelajaran Ujian</label>
+            <select id="upload-mapel-pilihan">
+              <option value="">-- Pilih Mapel --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Unggah Berkas / Foto Jawaban Esai (JPG/PNG/PDF)</label>
+            <input type="file" id="file-esai-peserta" />
+          </div>
+          <button onclick="kirimUploadEsai()">Kirim Jawaban Esai</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PANEL ADMIN -->
+    <div id="view-dashboard-admin" class="container-dash">
+      <div class="navbar-peserta">
+        <div style="font-weight: bold; color: var(--primary-green)">
+          Panel Administrator Rumah Tryout
+        </div>
+        <div class="nav-links">
+          <button class="active-nav" onclick="switchAdminTab('peserta', this)">
+            Kelola Peserta
+          </button>
+          <button onclick="switchAdminTab('soal', this)">Bank Soal</button>
+          <button onclick="switchAdminTab('jadwal', this)">
+            Jadwal & Kartu
+          </button>
+          <button onclick="switchAdminTab('info', this)">
+            Kelola Informasi
+          </button>
+          <button onclick="switchAdminTab('nilai', this)">Kelola Nilai</button>
+          <button onclick="switchAdminTab('monitoring', this)">
+            Monitoring
+          </button>
+        </div>
+        <button
+          style="
+            width: auto;
+            background: var(--danger-red);
+            padding: 6px 12px;
+            font-size: 13px;
+          "
+          onclick="logout()"
+        >
+          Keluar
+        </button>
+      </div>
+
+      <!-- Admin Tab 0: Kelola & Daftarkan Peserta -->
+      <div id="admin-tab-peserta" class="tab-panel active-tab">
+        <h3>Daftarkan Peserta Baru (Oleh Admin)</h3>
+        <div class="card-box" style="margin: 0 0 25px 0; max-width: 100%">
+          <div style="display: flex; gap: 15px">
+            <div class="form-group" style="flex: 1">
+              <label>Nama Lengkap</label
+              ><input
+                type="text"
+                id="admin-reg-nama"
+                placeholder="Nama siswa"
+              />
+            </div>
+            <div class="form-group" style="flex: 1">
+              <label>Asal Sekolah</label
+              ><input
+                type="text"
+                id="admin-reg-sekolah"
+                placeholder="Nama sekolah"
+              />
+            </div>
+          </div>
+          <div style="display: flex; gap: 15px">
+            <div class="form-group" style="flex: 1">
+              <label>Kelas</label
+              ><input type="text" id="admin-reg-kelas" placeholder="Kelas" />
+            </div>
+            <div class="form-group" style="flex: 1">
+              <label>Username / NISN</label
+              ><input type="text" id="admin-reg-user" placeholder="Username" />
+            </div>
+            <div class="form-group" style="flex: 1">
+              <label>Password</label
+              ><input type="text" id="admin-reg-pass" placeholder="Password" />
+            </div>
+          </div>
+          <button onclick="adminDaftarkanPeserta()">
+            Daftarkan Akun Peserta
+          </button>
+        </div>
+
+        <h3>
+          Daftar Akun Peserta Terdaftar (<span id="count-peserta">0</span>)
+        </h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Peserta</th>
+              <th>Asal Sekolah</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Status Akun</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-admin-peserta">
+            <tr>
+              <td colspan="6">Belum ada peserta terdaftar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Admin Tab 1: Soal -->
+      <div id="admin-tab-soal" class="tab-panel">
+        <h3>Buat Soal Ujian Baru</h3>
+        <div class="card-box" style="margin: 0; max-width: 100%">
+          <div class="form-group">
+            <label>Mata Pelajaran / Bab</label
+            ><input
+              type="text"
+              id="admin-mapel"
+              placeholder="Contoh: Biologi Genomik"
+            />
+          </div>
+          <div class="form-group">
+            <label>Tipe Soal</label>
+            <select id="admin-tipe-soal" onchange="gantiFormTipeSoal()">
+              <option value="pg">Pilihan Ganda</option>
+              <option value="bs">Benar / Salah</option>
+              <option value="menjodohkan">Menjodohkan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pertanyaan</label
+            ><textarea
+              id="admin-soal-teks"
+              placeholder="Tulis teks pertanyaan..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Bobot Poin Soal</label>
+            <input type="number" id="admin-poin-soal" value="4" min="1" />
+          </div>
+
+          <div class="form-group">
+            <label>Unggah Gambar Soal (Opsional)</label>
+            <input type="file" id="admin-gambar-soal" accept="image/*" />
+          </div>
+
+          <div id="container-opsi-pg">
+            <div class="form-group">
+              <label>Pilihan A</label><input type="text" id="opt-a" />
+            </div>
+            <div class="form-group">
+              <label>Pilihan B</label><input type="text" id="opt-b" />
+            </div>
+            <div class="form-group">
+              <label>Pilihan C</label><input type="text" id="opt-c" />
+            </div>
+            <div class="form-group">
+              <label>Pilihan D</label><input type="text" id="opt-d" />
+            </div>
+            <div class="form-group">
+              <label>Kunci Jawaban</label>
+              <select id="admin-kunci-pg">
+                <option value="0">Pilihan A</option>
+                <option value="1">Pilihan B</option>
+                <option value="2">Pilihan C</option>
+                <option value="3">Pilihan D</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="container-opsi-bs" style="display: none">
+            <div class="form-group">
+              <label>Kunci Jawaban Benar / Salah</label>
+              <select id="admin-kunci-bs">
+                <option value="Benar">Benar</option>
+                <option value="Salah">Salah</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="container-opsi-menjodohkan" style="display: none">
+            <div class="form-group">
+              <label>Pasangan Soal</label
+              ><input
+                type="text"
+                id="opt-menjodohkan"
+                placeholder="Format pasangan jawaban..."
+              />
+            </div>
+          </div>
+
+          <button onclick="simpanSoalKeBank()">Simpan ke Bank Soal</button>
+        </div>
+        <h3 style="margin-top: 30px">
+          Daftar Soal Tersimpan (<span id="count-soal">0</span>)
+        </h3>
+        <div id="list-bank-soal"></div>
+      </div>
+
+      <!-- Admin Tab 2: Jadwal & Kartu -->
+      <div id="admin-tab-jadwal" class="tab-panel">
+        <div style="display: flex; gap: 20px">
+          <div class="card-item" style="flex: 1">
+            <h3>Terbitkan Jadwal Ujian</h3>
+            <div class="form-group">
+              <label>Pilih Mapel dari Bank Soal</label>
+              <select id="select-mapel-jadwal">
+                <option value="">-- Pilih --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Waktu Mulai</label>
+              <input type="datetime-local" id="jadwal-mulai" />
+            </div>
+            <div class="form-group">
+              <label>Waktu Selesai</label>
+              <input type="datetime-local" id="jadwal-selesai" />
+            </div>
+            <button onclick="terbitkanJadwal()">Terbitkan Jadwal</button>
+          </div>
+          <div class="card-item" style="flex: 1">
+            <h3>Upload Kartu Peserta (PDF)</h3>
+            <div class="form-group">
+              <label>Username / NISN Peserta</label>
+              <input
+                type="text"
+                id="admin-target-user"
+                placeholder="NISN peserta..."
+              />
+            </div>
+            <div class="form-group">
+              <label>File PDF Kartu</label>
+              <input type="file" id="admin-file-kartu" accept=".pdf" />
+            </div>
+            <button onclick="uploadKartuPDF()">Upload Kartu</button>
+            <div id="info-kartu-admin" style="margin-top: 15px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Tab 3: Kelola Informasi -->
+      <div id="admin-tab-info" class="tab-panel">
+        <h3>Buat Informasi / Pengumuman Baru</h3>
+        <div class="card-box" style="margin: 0; max-width: 100%">
+          <div class="form-group">
+            <label>Judul Informasi</label
+            ><input
+              type="text"
+              id="admin-info-judul"
+              placeholder="Contoh: Jadwal Simulasi Ujian"
+            />
+          </div>
+          <div class="form-group">
+            <label>Isi Pengumuman</label
+            ><textarea
+              id="admin-info-teks"
+              placeholder="Tulis informasi selengkapnya..."
+            ></textarea>
+          </div>
+          <button onclick="tambahInformasiAdmin()">
+            Publikasikan Informasi
+          </button>
+        </div>
+        <h3 style="margin-top: 30px">Daftar Informasi Aktif</h3>
+        <div id="list-admin-informasi"></div>
+      </div>
+
+      <!-- Admin Tab 4: Kelola Nilai -->
+      <div id="admin-tab-nilai" class="tab-panel">
+        <h3>Manajemen, Ubah Nilai & Kata Semangat Peserta</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Peserta</th>
+              <th>Mapel</th>
+              <th>Nilai & Kata Semangat</th>
+              <th>Aksi Publikasi & Hapus</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-admin-nilai">
+            <tr>
+              <td colspan="4">Belum ada data nilai masuk.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Admin Tab 5: Monitoring -->
+      <div id="admin-tab-monitoring" class="tab-panel">
+        <h3>Live Monitoring Siswa Ujian</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Peserta</th>
+              <th>Status</th>
+              <th>Kamera Proctoring</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="3">Tidak ada peserta yang aktif saat ini.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. HALAMAN UJIAN CBT -->
+    <div id="view-exam" class="container-exam">
+      <div class="navbar-peserta">
+        <div
+          style="font-weight: bold; color: var(--primary-green)"
+          id="exam-title-header"
+        >
+          Ujian CBT
+        </div>
+        <div id="exam-user-info">Peserta: -</div>
+      </div>
+
+      <div class="exam-layout">
+        <div class="question-main">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              border-bottom: 1px solid var(--border-color);
+              padding-bottom: 10px;
+              margin-bottom: 15px;
+            "
+          >
+            <h3 id="q-num-title" style="margin: 0">Soal No. 1</h3>
+            <span id="q-tipe-label" style="font-size: 13px; color: #666"
+              >Pilihan Ganda</span
+            >
+          </div>
+          <p id="q-text" style="font-size: 15px; line-height: 1.6"></p>
+          <div id="q-image-container" style="margin-bottom: 15px"></div>
+          <div id="q-options" style="margin-top: 20px"></div>
+
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              margin-top: 30px;
+              border-top: 1px solid var(--border-color);
+              padding-top: 15px;
+            "
+          >
+            <button style="width: auto" onclick="pindahSoal(-1)">
+              Sebelumnya
+            </button>
+            <button
+              style="width: auto; background: var(--warning-orange)"
+              onclick="tandaiRagu()"
+            >
+              Ragu-ragu
+            </button>
+            <button style="width: auto" onclick="pindahSoal(1)">
+              Selanjutnya
+            </button>
+          </div>
+        </div>
+
+        <div class="exam-sidebar">
+          <div
+            class="card-item"
+            style="padding: 10px; text-align: center; margin-bottom: 0"
+          >
+            <div
+              style="
+                font-size: 11px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: var(--primary-green);
+              "
+            >
+              KAMERA PENGAWAS
+            </div>
+            <video id="webcam-small" autoplay playsinline muted></video>
+          </div>
+          <div class="card-item" style="padding: 15px; margin-bottom: 0">
+            <div style="font-size: 12px; font-weight: bold; margin-bottom: 8px">
+              NAVIGASI SOAL
+            </div>
+            <div class="number-grid" id="exam-nav-grid"></div>
+            <button
+              style="
+                width: 100%;
+                margin-top: 15px;
+                background: var(--danger-red);
+              "
+              onclick="selesaiUjian()"
+            >
+              Selesai Ujian
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let bankSoal = [];
+      let jadwalList = [];
+      let dataNilai = [];
+      let informasiList = [];
+      let kartuPesertaDB = {};
+      let riwayatUjianSelesai = {};
+      let currentUser = null;
+      let currentExam = null;
+      let currentIdx = 0;
+      let userAnswers = {};
+      let userRagu = {};
+
+      function toggleAuth(mode) {
+        if (mode === "register") {
+          document.getElementById("form-login-box").style.display = "none";
+          document.getElementById("form-reg-box").style.display = "block";
+        } else {
+          document.getElementById("form-login-box").style.display = "block";
+          document.getElementById("form-reg-box").style.display = "none";
+        }
+      }
+
+      function prosesRegister() {
+        let nama = document.getElementById("reg-nama").value;
+        let sekolah = document.getElementById("reg-sekolah").value;
+        let kelas = document.getElementById("reg-kelas").value;
+        let user = document.getElementById("reg-user").value;
+        let pass = document.getElementById("reg-pass").value;
+
+        if (!nama || !user || !pass) {
+          alert("Harap lengkapi formulir pendaftaran.");
+          return;
+        }
+
+        localStorage.setItem(
+          "rt_user_" + user,
+          JSON.stringify({ nama, sekolah, kelas, pass, status: "Valid" })
+        );
+        alert("Pendaftaran berhasil! Silakan login.");
+        toggleAuth("login");
+      }
+
+      // Admin mendaftarkan peserta
+      function adminDaftarkanPeserta() {
+        let nama = document.getElementById("admin-reg-nama").value;
+        let sekolah = document.getElementById("admin-reg-sekolah").value;
+        let kelas = document.getElementById("admin-reg-kelas").value;
+        let user = document.getElementById("admin-reg-user").value;
+        let pass = document.getElementById("admin-reg-pass").value;
+
+        if (!nama || !user || !pass) {
+          alert("Harap lengkapi data peserta.");
+          return;
+        }
+
+        localStorage.setItem(
+          "rt_user_" + user,
+          JSON.stringify({ nama, sekolah, kelas, pass, status: "Valid" })
+        );
+        document.getElementById("admin-reg-nama").value = "";
+        document.getElementById("admin-reg-sekolah").value = "";
+        document.getElementById("admin-reg-kelas").value = "";
+        document.getElementById("admin-reg-user").value = "";
+        document.getElementById("admin-reg-pass").value = "";
+
+        alert("Peserta berhasil didaftarkan oleh admin.");
+        updateTabelAdminPeserta();
+      }
+
+      function hapusPesertaAkun(username) {
+        if (confirm("Yakin ingin menghapus akun peserta ini?")) {
+          localStorage.removeItem("rt_user_" + username);
+          updateTabelAdminPeserta();
+        }
+      }
+
+      function updateTabelAdminPeserta() {
+        let tbody = document.getElementById("tabel-admin-peserta");
+        let keys = Object.keys(localStorage).filter((k) =>
+          k.startsWith("rt_user_")
+        );
+        document.getElementById("count-peserta").textContent = keys.length;
+
+        if (keys.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6">Belum ada peserta terdaftar.</td></tr>`;
+          return;
+        }
+
+        let html = "";
+        keys.forEach((k) => {
+          let userKey = k.replace("rt_user_", "");
+          let data = JSON.parse(localStorage.getItem(k));
+          html += `
+                    <tr>
+                        <td>${data.nama}</td>
+                        <td>${data.sekolah || "-"}</td>
+                        <td>${userKey}</td>
+                        <td>${data.pass}</td>
+                        <td><span style="color:var(--primary-green); font-weight:bold;">${
+                          data.status || "Valid"
+                        }</span></td>
+                        <td><button class="btn-danger" onclick="hapusPesertaAkun('${userKey}')">Hapus</button></td>
+                    </tr>
+                `;
+        });
+        tbody.innerHTML = html;
+      }
+
+      function prosesLogin() {
+        let u = document.getElementById("login-user").value;
+        let p = document.getElementById("login-pass").value;
+
+        if (u === "admin" && p === "admin") {
+          currentUser = { nama: "Administrator", role: "admin" };
+          gantiView("view-dashboard-admin");
+          updateAdminDashboard();
+          return;
+        }
+
+        let dataReg = localStorage.getItem("rt_user_" + u);
+        if (dataReg) {
+          let parsed = JSON.parse(dataReg);
+          if (parsed.pass === p) {
+            currentUser = parsed;
+            currentUser.username = u;
+            gantiView("view-dashboard-peserta");
+            updatePesertaDashboard();
+            return;
+          }
+        }
+        alert("Username atau Password salah.");
+      }
+
+      function gantiView(viewID) {
+        document.querySelectorAll("body > div").forEach((div) => {
+          if (div.id.startsWith("view-")) {
+            div.classList.remove("active-view");
+            div.style.display = "none";
+          }
+        });
+        let target = document.getElementById(viewID);
+        target.style.display = "block";
+        target.classList.add("active-view");
+      }
+
+      function logout() {
+        currentUser = null;
+        matikanKamera();
+        gantiView("view-auth");
+      }
+
+      function switchPesertaTab(tabName, btn) {
+        document
+          .querySelectorAll("#view-dashboard-peserta .tab-panel")
+          .forEach((t) => t.classList.remove("active-tab"));
+        document
+          .querySelectorAll("#view-dashboard-peserta .nav-links button")
+          .forEach((b) => b.classList.remove("active-nav"));
+        document
+          .getElementById("peserta-tab-" + tabName)
+          .classList.add("active-tab");
+        btn.classList.add("active-nav");
+      }
+
+      function switchAdminTab(tabName, btn) {
+        document
+          .querySelectorAll("#view-dashboard-admin .tab-panel")
+          .forEach((t) => t.classList.remove("active-tab"));
+        document
+          .querySelectorAll("#view-dashboard-admin .nav-links button")
+          .forEach((b) => b.classList.remove("active-nav"));
+        document
+          .getElementById("admin-tab-" + tabName)
+          .classList.add("active-tab");
+        btn.classList.add("active-nav");
+        if (tabName === "peserta") updateTabelAdminPeserta();
+      }
+
+      function gantiFormTipeSoal() {
+        let tipe = document.getElementById("admin-tipe-soal").value;
+        document.getElementById("container-opsi-pg").style.display =
+          tipe === "pg" ? "block" : "none";
+        document.getElementById("container-opsi-bs").style.display =
+          tipe === "bs" ? "block" : "none";
+        document.getElementById("container-opsi-menjodohkan").style.display =
+          tipe === "menjodohkan" ? "block" : "none";
+      }
+
+      function tambahInformasiAdmin() {
+        let judul = document.getElementById("admin-info-judul").value;
+        let teks = document.getElementById("admin-info-teks").value;
+
+        if (!judul || !teks) {
+          alert("Harap lengkapi judul dan isi informasi.");
+          return;
+        }
+
+        informasiList.push({ id: Date.now(), judul, teks });
+        document.getElementById("admin-info-judul").value = "";
+        document.getElementById("admin-info-teks").value = "";
+        alert("Informasi berhasil dipublikasikan.");
+        updateAdminInformasiList();
+      }
+
+      function hapusInformasiAdmin(id) {
+        informasiList = informasiList.filter((inf) => inf.id !== id);
+        alert("Informasi berhasil dihapus.");
+        updateAdminInformasiList();
+      }
+
+      function updateAdminInformasiList() {
+        let box = document.getElementById("list-admin-informasi");
+        if (informasiList.length === 0) {
+          box.innerHTML = `<p style="font-size:13px; color:#666;">Belum ada informasi yang dibuat.</p>`;
+          return;
+        }
+        let html = "";
+        informasiList.forEach((inf) => {
+          html += `
+                    <div class="card-item" style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                        <div>
+                            <h4 style="margin:0 0 5px 0; color:var(--primary-green);">${inf.judul}</h4>
+                            <p style="margin:0; font-size:13px; color:#555;">${inf.teks}</p>
+                        </div>
+                        <button class="btn-danger" onclick="hapusInformasiAdmin(${inf.id})">Hapus</button>
+                    </div>
+                `;
+        });
+        box.innerHTML = html;
+      }
+
+      function simpanSoalKeBank() {
+        let mapel = document.getElementById("admin-mapel").value;
+        let tipeSoal = document.getElementById("admin-tipe-soal").value;
+        let soal = document.getElementById("admin-soal-teks").value;
+        let poin =
+          parseInt(document.getElementById("admin-poin-soal").value) || 4;
+        let fileInput = document.getElementById("admin-gambar-soal");
+
+        if (!mapel || !soal) {
+          alert("Harap lengkapi mata pelajaran dan teks pertanyaan.");
+          return;
+        }
+
+        let dataSoalBaru = {
+          id: Date.now(),
+          mapel,
+          tipe: tipeSoal,
+          soal,
+          poin,
+          gambar:
+            fileInput.files.length > 0
+              ? URL.createObjectURL(fileInput.files[0])
+              : null,
+        };
+
+        if (tipeSoal === "pg") {
+          dataSoalBaru.opts = [
+            document.getElementById("opt-a").value,
+            document.getElementById("opt-b").value,
+            document.getElementById("opt-c").value,
+            document.getElementById("opt-d").value,
+          ];
+          dataSoalBaru.kunci = document.getElementById("admin-kunci-pg").value;
+        } else if (tipeSoal === "bs") {
+          dataSoalBaru.kunci = document.getElementById("admin-kunci-bs").value;
+        } else if (tipeSoal === "menjodohkan") {
+          dataSoalBaru.pasangan =
+            document.getElementById("opt-menjodohkan").value;
+        }
+
+        bankSoal.push(dataSoalBaru);
+
+        document.getElementById("admin-soal-teks").value = "";
+        document.getElementById("admin-gambar-soal").value = "";
+        document.getElementById("opt-a").value = "";
+        document.getElementById("opt-b").value = "";
+        document.getElementById("opt-c").value = "";
+        document.getElementById("opt-d").value = "";
+        document.getElementById("opt-menjodohkan").value = "";
+
+        alert("Soal berhasil disimpan ke bank soal.");
+        updateAdminDashboard();
+      }
+
+      function hapusSoal(id) {
+        bankSoal = bankSoal.filter((s) => s.id !== id);
+        alert("Soal berhasil dihapus.");
+        updateAdminDashboard();
+      }
+
+      function updateAdminDashboard() {
+        document.getElementById("count-soal").textContent = bankSoal.length;
+        let mapelUnik = [...new Set(bankSoal.map((s) => s.mapel))];
+        let select = document.getElementById("select-mapel-jadwal");
+        let selectEsai = document.getElementById("upload-mapel-pilihan");
+
+        select.innerHTML = '<option value="">-- Pilih --</option>';
+        if (selectEsai)
+          selectEsai.innerHTML = '<option value="">-- Pilih Mapel --</option>';
+
+        mapelUnik.forEach((m) => {
+          select.innerHTML += `<option value="${m}">${m}</option>`;
+          if (selectEsai)
+            selectEsai.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+
+        let listHTML = "";
+        bankSoal.forEach((s, i) => {
+          listHTML += `
+                    <div class="card-item" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <div><p><b>${
+                          i + 1
+                        }. [${s.mapel.toUpperCase()} - ${s.tipe.toUpperCase()}]</b> ${
+            s.soal
+          } <span style="color:var(--primary-green); font-size:12px;">(Poin: +${
+            s.poin
+          })</span></p></div>
+                        <button class="btn-danger" onclick="hapusSoal(${
+                          s.id
+                        })">Hapus</button>
+                    </div>
+                `;
+        });
+        document.getElementById("list-bank-soal").innerHTML = listHTML;
+        updateTabelAdminNilai();
+        updateAdminKartuInfo();
+        updateAdminInformasiList();
+        updateTabelAdminPeserta();
+      }
+
+      function terbitkanJadwal() {
+        let mapel = document.getElementById("select-mapel-jadwal").value;
+        let mulai = document.getElementById("jadwal-mulai").value;
+        let selesai = document.getElementById("jadwal-selesai").value;
+
+        if (!mapel || !mulai || !selesai) {
+          alert(
+            "Pilih mapel dan lengkapi rentang waktu jadwal mulai dan selesai."
+          );
+          return;
+        }
+        let soalMapel = bankSoal.filter((s) => s.mapel === mapel);
+        jadwalList.push({ mapel, mulai, selesai, soal: soalMapel });
+        alert("Jadwal ujian berhasil diterbitkan.");
+      }
+
+      function uploadKartuPDF() {
+        let username = document.getElementById("admin-target-user").value;
+        let fileInput = document.getElementById("admin-file-kartu");
+        if (!username || fileInput.files.length === 0) {
+          alert("Masukkan NISN dan pilih file PDF.");
+          return;
+        }
+        kartuPesertaDB[username] = fileInput.files[0].name;
+        alert("Kartu peserta berhasil diunggah untuk akun " + username);
+        updateAdminKartuInfo();
+      }
+
+      function hapusKartuPDF(username) {
+        delete kartuPesertaDB[username];
+        alert("Kartu peserta berhasil dihapus.");
+        updateAdminKartuInfo();
+      }
+
+      function updateAdminKartuInfo() {
+        let infoBox = document.getElementById("info-kartu-admin");
+        let keys = Object.keys(kartuPesertaDB);
+        if (keys.length === 0) {
+          infoBox.innerHTML =
+            "<p style='font-size:12px; color:#666;'>Belum ada kartu terunggah.</p>";
+        } else {
+          let html =
+            "<p style='font-size:12px; font-weight:bold;'>Daftar Kartu Terunggah:</p><ul style='font-size:12px; padding-left:15px;'>";
+          keys.forEach((k) => {
+            html += `<li>${k} (${kartuPesertaDB[k]}) <button class="btn-danger" style="padding:2px 6px; font-size:10px;" onclick="hapusKartuPDF('${k}')">Hapus</button></li>`;
+          });
+          html += "</ul>";
+          infoBox.innerHTML = html;
+        }
+      }
+
+      function updateTabelAdminNilai() {
+        let tbody = document.getElementById("tabel-admin-nilai");
+        if (dataNilai.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4">Belum ada data nilai masuk.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = "";
+        dataNilai.forEach((d, idx) => {
+          let pesanSemangat =
+            d.pesertaPesan ||
+            "Tetap semangat dan terus belajar untuk hasil yang lebih baik!";
+          tbody.innerHTML += `
+                    <tr>
+                        <td>${d.nama}</td>
+                        <td>${d.mapel}</td>
+                        <td>
+                            <div style="margin-bottom:5px;"><b>Nilai:</b> <input type="number" id="edit-nilai-${idx}" value="${d.nilai}" style="width:70px;"></div>
+                            <div><b>Kata Semangat:</b><br><input type="text" id="edit-pesan-${idx}" value="${pesanSemangat}" style="width:100%;"></div>
+                        </td>
+                        <td>
+                            <button onclick="simpanPublikasiNilai(${idx})" style="width:auto; padding:6px 10px; font-size:12px; margin-bottom:5px;">Simpan & Publikasikan</button><br>
+                            <button class="btn-danger" onclick="hapusNilai(${idx})">Hapus</button>
+                        </td>
+                    </tr>
+                `;
+        });
+      }
+
+      function simpanPublikasiNilai(idx) {
+        let val = document.getElementById("edit-nilai-" + idx).value;
+        let pesan = document.getElementById("edit-pesan-" + idx).value;
+        dataNilai[idx].nilai = parseInt(val);
+        dataNilai[idx].pesertaPesan = pesan;
+        dataNilai[idx].status = "Dipublikasikan";
+        alert(
+          "Nilai dan kata semangat berhasil diperbarui serta dipublikasikan."
+        );
+      }
+
+      function hapusNilai(idx) {
+        dataNilai.splice(idx, 1);
+        alert("Data nilai berhasil dihapus.");
+        updateTabelAdminNilai();
+      }
+
+      // PESERTA LOGIC
+      function updatePesertaDashboard() {
+        document.getElementById(
+          "peserta-welcome-text"
+        ).textContent = `Halo, ${currentUser.nama}`;
+
+        let infoBoxPeserta = document.getElementById("peserta-list-informasi");
+        if (informasiList.length === 0) {
+          infoBoxPeserta.innerHTML = `<p style="font-size:13px; color:#555;">Belum ada informasi terbaru dari admin.</p>`;
+        } else {
+          let htmlInfo = "";
+          informasiList.forEach((inf) => {
+            htmlInfo += `
+                        <div style="margin-bottom: 10px; border-bottom: 1px dashed #d1e7dd; padding-bottom: 8px;">
+                            <strong style="color:var(--primary-green);">${inf.judul}</strong>
+                            <p style="margin: 3px 0 0 0; font-size:13px; color:#444;">${inf.teks}</p>
+                        </div>
+                    `;
+          });
+          infoBoxPeserta.innerHTML = htmlInfo;
+        }
+
+        let listJadwal = document.getElementById("list-jadwal-peserta");
+        if (jadwalList.length === 0) {
+          listJadwal.innerHTML = `<p>Belum ada jadwal ujian aktif.</p>`;
+        } else {
+          listJadwal.innerHTML = "";
+          jadwalList.forEach((j, idx) => {
+            let keySelesai = currentUser.username + "_" + j.mapel;
+            let sudahSelesai = riwayatUjianSelesai[keySelesai];
+
+            let tombolAksi = sudahSelesai
+              ? `<button style="background:#95a5a6; cursor:not-allowed;" disabled>Ujian Selesai (Terkunci)</button>`
+              : `<button onclick="mulaiUjian(${idx})">Mulai Ujian</button>`;
+
+            let formatMulai = j.mulai ? j.mulai.replace("T", " Pukul ") : "-";
+            let formatSelesai = j.selesai
+              ? j.selesai.replace("T", " Pukul ")
+              : "-";
+
+            listJadwal.innerHTML += `
+                        <div class="card-item">
+                            <h4>${j.mapel}</h4>
+                            <p style="font-size:12px; color:#333;"><b>Mulai:</b> ${formatMulai}</p>
+                            <p style="font-size:12px; color:#333;"><b>Selesai:</b> ${formatSelesai}</p>
+                            <p style="font-size:12px; color:#666; margin-top:5px;">Jumlah Soal: ${j.soal.length}</p>
+                            ${tombolAksi}
+                        </div>
+                    `;
+          });
+        }
+
+        let kartuBox = document.getElementById("info-kartu-peserta");
+        let filePDF = kartuPesertaDB[currentUser.username];
+        if (filePDF) {
+          kartuBox.innerHTML = `<p>File Kartu Peserta: <b>${filePDF}</b></p><button onclick="alert('Mengunduh kartu peserta...')">Download PDF Kartu</button>`;
+        } else {
+          kartuBox.innerHTML = `<p>Belum ada file kartu peserta PDF yang diunggah oleh admin untuk akun Anda.</p>`;
+        }
+
+        let selectBab = document.getElementById("select-hasil-bab");
+        let mapelDirilis = [
+          ...new Set(
+            dataNilai
+              .filter((n) => n.status === "Dipublikasikan")
+              .map((n) => n.mapel)
+          ),
+        ];
+        selectBab.innerHTML = '<option value="">Pilih Bab / Mapel</option>';
+        mapelDirilis.forEach((m) => {
+          selectBab.innerHTML += `<option value="${m}">${m}</option>`;
+        });
+        document.getElementById("hasil-cbt-detail-box").innerHTML = "";
+      }
+
+      function tampilkanHasilCBT() {
+        let mapelPilihan = document.getElementById("select-hasil-bab").value;
+        let detailBox = document.getElementById("hasil-cbt-detail-box");
+
+        if (!mapelPilihan) {
+          alert("Pilih bab atau mata pelajaran terlebih dahulu.");
+          return;
+        }
+
+        let hasilUser = dataNilai.find(
+          (n) =>
+            n.username === currentUser.username &&
+            n.mapel === mapelPilihan &&
+            n.status === "Dipublikasikan"
+        );
+
+        if (!hasilUser) {
+          detailBox.innerHTML = `<div class="card-item" style="text-align:center;"><p>Belum ada hasil nilai yang dipublikasikan untuk bab ini.</p></div>`;
+          return;
+        }
+
+        let pesanSemangat =
+          hasilUser.pesertaPesan ||
+          "Tetap semangat dan terus belajar untuk hasil yang lebih baik!";
+
+        detailBox.innerHTML = `
+                <div class="card-box" style="margin:0 auto; background: white; border:1px solid var(--border-color);">
+                    <h3 style="margin-top:0; color:var(--primary-green); text-align:center;">Hasil Ujian ${
+                      hasilUser.mapel
+                    }</h3>
+                    <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+                    <p style="margin:8px 0;"><b>Nama Peserta:</b> ${
+                      currentUser.nama
+                    }</p>
+                    <p style="margin:8px 0;"><b>Asal Sekolah:</b> ${
+                      currentUser.sekolah || "-"
+                    }</p>
+                    <div style="margin-top:20px; background:var(--light-green); padding:15px; border-radius:6px; text-align:center;">
+                        <span style="font-size:13px; color:#555;">Hasil CBT (Nilai Akhir)</span><br>
+                        <b style="font-size:24px; color:var(--primary-green);">${
+                          hasilUser.nilai
+                        } / 100</b>
+                    </div>
+                    <div style="margin-top:15px; padding:12px; background:#fffdf5; border:1px dashed var(--warning-orange); border-radius:6px; text-align:center;">
+                        <p style="margin:0; font-size:13px; color:#555;"><b>Pesan & Kata Semangat:</b></p>
+                        <p style="margin:5px 0 0 0; font-size:14px; font-style:italic; color:#333;">"${pesanSemangat}"</p>
+                    </div>
+                </div>
+            `;
+      }
+
+      function kirimUploadEsai() {
+        let mapel = document.getElementById("upload-mapel-pilihan").value;
+        let file = document.getElementById("file-esai-peserta").files[0];
+        if (!mapel || !file) {
+          alert("Pilih mapel dan unggah file jawaban esai.");
+          return;
+        }
+        alert("Berkas jawaban esai berhasil dikirim ke admin.");
+      }
+
+      // UJIAN & KAMERA
+      function mulaiUjian(idx) {
+        currentExam = jadwalList[idx];
+        let keySelesai = currentUser.username + "_" + currentExam.mapel;
+        if (riwayatUjianSelesai[keySelesai]) {
+          alert(
+            "Anda sudah menyelesaikan ujian ini dan tidak dapat membukanya kembali."
+          );
+          return;
+        }
+
+        if (currentExam.soal.length === 0) {
+          alert("Belum ada soal untuk ujian ini.");
+          return;
+        }
+
+        currentIdx = 0;
+        userAnswers = {};
+        userRagu = {};
+
+        gantiView("view-exam");
+        document.getElementById(
+          "exam-title-header"
+        ).textContent = `Ujian: ${currentExam.mapel}`;
+        document.getElementById(
+          "exam-user-info"
+        ).textContent = `Peserta: ${currentUser.nama}`;
+
+        renderSoalUjian();
+        aktifkanKamera();
+      }
+
+      function aktifkanKamera() {
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((stream) => {
+            let video = document.getElementById("webcam-small");
+            video.srcObject = stream;
+          })
+          .catch((err) => console.log("Akses kamera ditolak/tidak tersedia."));
+      }
+
+      function matikanKamera() {
+        let video = document.getElementById("webcam-small");
+        if (video && video.srcObject) {
+          video.srcObject.getTracks().forEach((t) => t.stop());
+        }
+      }
+
+      function renderSoalUjian() {
+        let curr = currentExam.soal[currentIdx];
+        document.getElementById("q-num-title").textContent = `Soal No. ${
+          currentIdx + 1
+        } dari ${currentExam.soal.length}`;
+        document.getElementById(
+          "q-tipe-label"
+        ).textContent = `Tipe: ${curr.tipe.toUpperCase()} | Poin: +${
+          curr.poin
+        }`;
+        document.getElementById("q-text").textContent = curr.soal;
+
+        let imgContainer = document.getElementById("q-image-container");
+        if (curr.gambar) {
+          imgContainer.innerHTML = `<img src="${curr.gambar}" style="max-width:100%; max-height:200px; border-radius:6px; border:1px solid #ddd;">`;
+        } else {
+          imgContainer.innerHTML = "";
+        }
+
+        let optHTML = "";
+        if (curr.tipe === "pg") {
+          curr.opts.forEach((o, i) => {
+            let checked = userAnswers[currentIdx] === i ? "checked" : "";
+            optHTML += `
+                        <label style="display:block; background:var(--light-green); padding:10px; margin-bottom:8px; border-radius:6px; cursor:pointer;">
+                            <input type="radio" name="pilihan" value="${i}" ${checked} onclick="pilihOpsi(${i})"> 
+                            <b>${String.fromCharCode(65 + i)}.</b> ${o}
+                        </label>
+                    `;
+          });
+        } else if (curr.tipe === "bs") {
+          ["Benar", "Salah"].forEach((val) => {
+            let checked = userAnswers[currentIdx] === val ? "checked" : "";
+            optHTML += `
+                        <label style="display:block; background:var(--light-green); padding:10px; margin-bottom:8px; border-radius:6px; cursor:pointer;">
+                            <input type="radio" name="pilihan" value="${val}" ${checked} onclick="pilihOpsi('${val}')"> 
+                            <b>${val}</b>
+                        </label>
+                    `;
+          });
+        } else if (curr.tipe === "menjodohkan") {
+          let currentVal = userAnswers[currentIdx] || "";
+          optHTML += `
+                    <p style="font-size:13px; color:#555;">Pasangan / Jawaban Menjodohkan:</p>
+                    <input type="text" value="${currentVal}" placeholder="Ketik jawaban menjodohkan..." oninput="pilihOpsi(this.value)" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:6px;">
+                `;
+        }
+
+        document.getElementById("q-options").innerHTML = optHTML;
+        renderExamNavGrid();
+      }
+
+      function pilihOpsi(val) {
+        userAnswers[currentIdx] = val;
+        if (userRagu[currentIdx]) delete userRagu[currentIdx];
+        renderExamNavGrid();
+      }
+
+      function tandaiRagu() {
+        userRagu[currentIdx] = !userRagu[currentIdx];
+        renderExamNavGrid();
+      }
+
+      function pindahSoal(dir) {
+        let next = currentIdx + dir;
+        if (next >= 0 && next < currentExam.soal.length) {
+          currentIdx = next;
+          renderSoalUjian();
+        }
+      }
+
+      function renderExamNavGrid() {
+        let grid = "";
+        currentExam.soal.forEach((_, i) => {
+          let cls = "";
+          if (i === currentIdx) cls += " active";
+          if (userAnswers[i] !== undefined) cls += " answered";
+          if (userRagu[i]) cls = " doubt";
+
+          grid += `<button class="btn-num ${cls}" onclick="currentIdx = ${i}; renderSoalUjian();">${
+            i + 1
+          }</button>`;
+        });
+        document.getElementById("exam-nav-grid").innerHTML = grid;
+      }
+
+      function selesaiUjian() {
+        if (
+          confirm(
+            "Apakah Anda yakin ingin menyelesaikan ujian? Setelah dikumpulkan, Anda tidak dapat membukanya kembali."
+          )
+        ) {
+          matikanKamera();
+
+          let totalPoinDiperoleh = 0;
+          let totalPoinMaksimal = 0;
+
+          currentExam.soal.forEach((s, i) => {
+            totalPoinMaksimal += s.poin;
+            if (s.tipe === "pg") {
+              if (
+                userAnswers[i] !== undefined &&
+                parseInt(userAnswers[i]) === parseInt(s.kunci)
+              ) {
+                totalPoinDiperoleh += s.poin;
+              }
+            } else if (s.tipe === "bs") {
+              if (userAnswers[i] !== undefined && userAnswers[i] === s.kunci) {
+                totalPoinDiperoleh += s.poin;
+              }
+            } else {
+              if (
+                userAnswers[i] !== undefined &&
+                userAnswers[i].trim() !== ""
+              ) {
+                totalPoinDiperoleh += s.poin;
+              }
+            }
+          });
+
+          let nilaiSkala100 =
+            totalPoinMaksimal > 0
+              ? Math.round((totalPoinDiperoleh / totalPoinMaksimal) * 100)
+              : 0;
+
+          dataNilai.push({
+            username: currentUser.username,
+            nama: currentUser.nama,
+            mapel: currentExam.mapel,
+            nilai: nilaiSkala100,
+            pesertaPesan: "Tetap semangat dan terus tingkatkan prestasimu!",
+            status: "Belum Dipublikasikan",
+          });
+
+          riwayatUjianSelesai[
+            currentUser.username + "_" + currentExam.mapel
+          ] = true;
+
+          alert("Ujian berhasil dikumpulkan.");
+          gantiView("view-dashboard-peserta");
+          updatePesertaDashboard();
+        }
+      }
+    </script>
+  </body>
+</html>
